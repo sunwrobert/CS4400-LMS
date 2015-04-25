@@ -1,0 +1,142 @@
+Group 57
+
+return books on shelf if holds have expired after 3 days
+--------------------------------------------------------
+SET GLOBAL event_scheduler = on;
+
+
+DELIMITER |
+CREATE EVENT check_holds
+ON schedule
+  every 1 day
+  do begin
+  UPDATE book_copy inner join issue on book_copy.ISBN = issue.ISBN and
+book_copy.CopyNumber = issue.CopyNumber set IsOnHold = 0 WHERE 
+IsOnHold=1 and IsCheckedOut=0 and IsDamaged=0 AND DATEDIFF(CURDATE(),issue.IssueDate) > 3;
+  end |
+DELIMITER ;
+
+Determine User Type
+-------------------
+"SELECT Username FROM staff WHERE Username = '{username}'"
+"SELECT Username FROM student_faculty WHERE Username = '{username}' AND IsFaculty = 1"
+
+Login
+-----
+"SELECT Username FROM user WHERE Username = '{user}'
+                AND Password = '{password}';"
+
+Register
+--------
+"INSERT INTO user VALUES('{u}','{p}')"
+
+Create Profile
+--------------
+"INSERT INTO student_faculty VALUES('{userName}','{fullName}', STR_TO_DATE('{dob}', '%m/%d/%Y'),
+        '{gender}',0, '{email}', '{address}','{isFaculty}', 0, '{dept}');"
+
+Search Books
+------------
+"SELECT DISTINCT book.ISBN, book.Title,
+                 book.Edition FROM book INNER JOIN book_authors ON
+                 book.ISBN = book_authors.ISBN "WHERE book.ISBN LIKE '%{isbn}%' AND book.Title LIKE '%{title}%'
+                 AND book_authors.Author LIKE '%{author}%' AND book.IsBookOnReserve = '0';"
+"SELECT COUNT(CopyNumber) from book_copy WHERE ISBN = '{isbn}' 
+                AND IsOnHold = 0 AND IsCheckedOut = 0 AND IsDamaged = 0;"
+
+Damaged Report 
+---------------------
+"SELECT MONTHNAME(issue.ReturnDate) AS Month, book.SubjectName as Subject, COUNT(book_copy.isDamaged)
+               AS DamagedBooks  FROM book INNER JOIN book_copy ON book.ISBN = book_copy.ISBN INNER JOIN issue ON 
+               issue.ISBN = book_copy.ISBN AND issue.CopyNumber = book_copy.CopyNumber WHERE MONTHNAME(issue.ReturnDate) = '{month}' AND 
+              (book.SubjectName = '{subject1}' OR book.SubjectName = '{subject2}' OR book.SubjectName = '{subject3}')
+               AND book_copy.IsDamaged = 1 GROUP BY Subject;"
+
+Popular Books Report 
+---------------------
+"SELECT MONTHNAME(issue.IssueDate) AS Month, book.Title AS Title, COUNT(issue.IssueDate) as Checkouts
+          FROM book INNER JOIN book_copy ON book.ISBN = book_Copy.ISBN INNER JOIN issue ON issue.ISBN = book_copy.ISBN
+          AND issue.CopyNumber = book_copy.CopyNumber WHERE (MONTHNAME(issue.IssueDate) = 'January'
+          OR MONTHNAME(issue.IssueDate) = 'February') GROUP BY Month(issue.IssueDate), book.Title ORDER BY Month(issue.IssueDate)"
+
+Frequent Report
+---------------
+"SELECT MONTHNAME(issue.IssueDate) AS Month, student_faculty.Name, COUNT(issue.IssueDate) as
+          Checkouts FROM issue INNER JOIN student_faculty ON issue.Username = student_faculty.Username WHERE
+          (MONTHNAME(issue.IssueDate) = 'January' OR MONTHNAME(issue.IssueDate) = 'February')
+          GROUP BY Month(issue.IssueDate), student_faculty.Username HAVING COUNT(issue.IssueDate) > 10
+          ORDER BY Month(issue.IssueDate)"
+
+Popular Subject Report
+----------------------
+"SELECT MONTHNAME(issue.IssueDate) AS Month, book.SubjectName, COUNT(issue.IssueDate) as Checkouts FROM issue" 
+           INNER JOIN book ON issue.ISBN = book.isbn WHERE (MONTHNAME(issue.IssueDate) = 'January'" 
+           OR MONTHNAME(issue.IssueDate) = 'February') GROUP BY Month(issue.IssueDate), book.SubjectName " 
+           ORDER BY Month(issue.IssueDate)"
+
+Hold Request
+------------
+"UPDATE book_copy SET IsOnHold = 1 WHERE ISBN = '{isbn}' AND 
+                CopyNumber=(SELECT * FROM(SELECT CopyNumber FROM book_copy WHERE ISBN='{isbn}' 
+                AND IsOnHold=0 AND IsCheckedOut = 0 AND IsDamaged = 0 GROUP BY CopyNumber LIMIT 1)temp);".format(isbn=isbn);
+"INSERT INTO issue VALUES('{userName}',0,'{isbn}',(SELECT CopyNumber from book_copy where IsOnHold = 1 
+            AND ISBN='{isbn}' ORDER BY CopyNumber DESC LIMIT 1),CURDATE(),CURDATE(),DATE_ADD(CURDATE(), INTERVAL 17 DAY),0);"
+"SELECT IssueID FROM issue ORDER BY IssueID DESC LIMIT 1;"
+
+Book Checkout
+-------------
+"SELECT Username, issue.ISBN, issue.CopyNumber FROM issue inner join book_copy ON 
+                book_copy.ISBN = issue.ISBN and book_copy.CopyNumber = issue.CopyNumber 
+                where IssueID = {issueID} and IsOnHold=1"
+                
+"UPDATE issue SET ReturnDate='{returnDate}' WHERE IssueID={issueID}"
+
+"UPDATE book_copy SET IsOnHold=0,IsCheckedOut=1 WHERE ISBN='{isbn}' AND CopyNumber={copyNumber}
+
+Lost Damaged Book
+-----------------
+SELECT IssueDate, Username FROM issue WHERE ISBN='{isbn}' AND CopyNumber={copyNumber} 
+                ORDER BY IssueDate DESC LIMIT 1"
+SELECT Cost FROM book WHERE ISBN='{isbn}'"
+UPDATE student_faculty SET Penalty = Penalty + {penalty} WHERE Username = '{lastUser}'
+UPDATE book_copy SET IsOnHold=0, IsCheckedOut=0, IsDamaged=1 WHERE ISBN='{isbn}'
+
+Return Book
+-----------
+"SELECT Username, issue.CopyNumber, issue.ISBN 
+                FROM issue INNER JOIN book_copy on book_copy.ISBN = issue.ISBN and book_copy.CopyNumber = issue.CopyNumber 
+                WHERE IssueID={issueID} and isCheckedOut=1"
+"UPDATE book_copy SET IsCheckedOut=0,IsDamaged='{damaged}' WHERE ISBN='{isbn}' AND 
+                CopyNumber={copyNumber}"
+"UPDATE student_faculty INNER JOIN issue ON issue.Username = student_faculty.Username 
+                SET Penalty = Penalty + 0.5 * DATEDIFF(CURDATE(),ReturnDate) WHERE student_faculty.Username 
+                ='{username}'"
+
+Request Extension
+-----------------
+"SELECT issue.Username, issue.IssueDate, issue.ExtensionDate, issue.ReturnDate, issue.ExtensionCount, 
+                      book_copy.FutureRequester, student_faculty.IsFaculty FROM issue INNER JOIN book_copy ON 
+                      (issue.ISBN = book_copy.ISBN AND issue.CopyNumber = book_copy.CopyNumber) 
+                      INNER JOIN student_faculty ON issue.Username = student_faculty.Username WHERE issue.IssueID = '{issueID}' 
+                      AND issue.Username = '{username}';"                 
+"UPDATE issue SET ExtensionDate = '{newExtensionDate}', ReturnDate = '{newEstimatedReturnDate}', 
+                                    "ExtensionCount = '{extensionCount}' WHERE IssueID = '{issueID}' AND Username = '{username}';
+
+Future Hold Request
+-------------------
+"SELECT CopyNumber FROM book_copy WHERE ISBN = '{isbn}' AND IsOnHold = 0 AND IsCheckedOut = 0
+                     AND IsDamaged = 0 AND FutureRequester IS NULL"
+
+If no results: check books that are already checked out or on hold.
+"SELECT book_copy.CopyNumber, issue.ReturnDate  FROM issue INNER JOIN book_copy ON 
+                      book_copy.ISBN = issue.ISBN WHERE issue.ISBN = '{isbn}' AND issue.ReturnDate >= Now() 
+                      AND (book_copy.IsCheckedOut = 1 OR book_copy.IsOnHold = 1) AND book_copy.FutureRequester IS NULL 
+                      ORDER BY issue.ReturnDate ASC LIMIT 1;"
+
+"UPDATE book_copy SET FutureRequester = '{username}' WHERE ISBN = '{isbn}'
+                                             AND CopyNumber = '{copyNumber}';
+
+Track Book Location
+-------------------
+"SELECT shelf.FloorNumber, shelf.ShelfNumber, shelf.AisleNumber, book.SubjectName FROM book 
+                  INNER JOIN shelf ON book.ShelfNumber = shelf.ShelfNumber WHERE ISBN = '{isbn}';"

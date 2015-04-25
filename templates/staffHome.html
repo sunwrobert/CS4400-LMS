@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %} Staff Home {% endblock %}
+{% block header %} <h4>Staff Home</h4> {% endblock %}
+{% block content %}
+<style>
+    td{
+        height:50px
+    }
+</style>
+    <div>
+        <form action="" method="post">
+            <table border ="0" width="600">
+                <tr>
+                    <td><button type="button" class="btn btn-default"><a href="{{url_for('searchBooks')}}">Book Checkout</a></button></td>
+                    <td><button type="button" class="btn btn-default"><a href="{{url_for('searchBooks')}}">Book Return</a></button></td>
+                </tr>
+                <tr>
+                   <td><button type="button" class="btn btn-default"><a href="{{url_for('searchBooks')}}">Lost/Damaged Book Penalties</a></button></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+{% endblock %}

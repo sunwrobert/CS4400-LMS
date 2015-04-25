@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block title %} Home {% endblock %}
+{% block header %} <h4>Home</h4> {% endblock %}
+{% block content %}
+<style>
+    td{
+        height:50px
+    }
+</style>
+    <div>
+        <form action="" method="post">
+            <table border ="0" width="600">
+                <tr>
+                    <td><button type="button" class="btn btn-default"><a href="{{url_for('searchBooks')}}">Search Books</a></button></td>
+                    <td><button type="button" class="btn btn-default"><a href="{{url_for('requestExtension')}}">Request Extension</a></button></td>
+                </tr>
+                <tr>
+                   <td><button type="button" class="btn btn-default"><a href="{{url_for('futureHoldRequest')}}">Future Hold Request</a></button></td>
+                   <td><button type="button" class="btn btn-default"><a href="{{url_for('trackBookLocation')}}">Track Book Location</a></button></td>
+                </tr>
+            </table>
+            <button type="button" class="btn btn-default"><a href="{{url_for('logout')}}">Logout</a></button>
+        </form>
+    </div>
+{% endblock %}

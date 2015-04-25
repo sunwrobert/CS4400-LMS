@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+{% block title %} Create Profile {% endblock %}
+{% block content %}
+<script>
+	$(document).ready(function() {
+        $('#dob').datepicker();
+		$('#facultyButton').click(function(){
+		  if (this.checked) {
+		  	$('#deptform').removeAttr("disabled");
+		  } else {
+			$('#deptform').attr("disabled","disabled");
+		  }
+		});
+		var $gender = $('#gender');
+		$('select[name="genderform"]').change(function(){
+			$gender.val($(this).val())
+		}).triggerHandler('change')
+		var $dept = $('#dept');
+		$('select[name="deptform"]').change(function(){
+			$dept.val($(this).val())
+		}).triggerHandler('change')
+        $('#facultyButton').click(function () {
+            if ($('#isFaculty').val() == "0") {
+                $('#isFaculty').val("1");
+            } else {
+                $('#isFaculty').val("0");
+            }
+            
+        });
+	});
+</script>
+<h4>Create Profile</h4>
+<div>
+    <form action="" method="post">
+        <label>First Name:</label><input type="text" name="firstName">
+        <p><label>Last Name:</label><input type="text" name="lastName">
+        <p><label>Date of Birth:</label><input type="text" id='dob' name="dob">
+        <p><label>Gender:</label>
+        <select form="genderform" id='genderform' name='genderform'>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+        <p><label>Email:</label><input type="text" name="email">
+        <p><label>Are you a faculty member?:</label><input type="checkbox" id="facultyButton" name="isFacultyMember">
+        <p><label>Address:</label><input type="text" name="address">
+        <p><label>Associated Department:</label>
+        <select class="form-control" id="deptform" name="deptform" disabled="true">
+            <option disabled selected></option>
+            <option value="ACCT">ACCT</option>
+            <option value="AE">AE</option>
+            <option value="APPH">APPH</option>
+            <option value="ARCH">ARCH</option>
+            <option value="BIOL">BIOL</option>
+            <option value="BMED">BMED</option>
+            <option value="CEE">CEE</option>
+            <option value="CHEM">CHEM</option>
+            <option value="CHIN">CHIN</option>
+            <option value="COA">COA</option>
+            <option value="COE">COE</option>
+            <option value="CS">CS</option>
+            <option value="CSE">CSE</option>
+            <option value="EAS">EAS</option>
+            <option value="ECON">ECON</option>
+            <option value="ENGL">ENGL</option>
+            <option value="FREN">FREN</option>
+            <option value="GRMN">GRMN</option>
+            <option value="HIST">HIST</option>
+            <option value="ENGL">ENGL</option>
+            <option value="FREN">FREN</option>
+            <option value="GRMN">GRMN</option>
+            <option value="HTS">HTS</option>
+            <option value="ID">ID</option>
+            <option value="INTA">INTA</option>
+            <option value="ISYE">ISYE</option>
+            <option value="JAPN">JAPN</option>
+            <option value="KOR">KOR</option>
+            <option value="MATH">MATH</option>
+            <option value="ME">ME</option>
+            <option value="PHYS">PHYS</option>
+            <option value="PSYC">PSYC</option>
+            <option value="RUSS">RUSS</option>
+            <option value="SOC">SOC</option>
+            <option value="SPAN">SPAN</option>
+        </select>
+        <p><input class="btn btn-default" type="submit" value="Submit">
+        <input type="text" hidden='true' id='gender' name='gender' value="">
+        <input type="text" hidden='true' id='dept' name='dept' value="">
+        <input type="text" hidden='true' id='isFaculty' name='isFaculty' value="0">
+    </form>
+</div>
+{% endblock %}

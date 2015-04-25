@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block title %} Popular Books Report {% endblock %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="table.css">
+<h4>Popular Books Report</h4>
+<p>
+<div>
+    <table class="table" id='table' width="600">
+        <thead>
+        <tr>
+            <th>Month</th>
+            <th>Title</th>
+            <th># of Checkouts</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in rows %}
+        <tr>
+            <td>{{row.Month}}</td>
+            <td>{{row.Title}}</td>
+            <td>{{row.Checkouts}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<p><button type="button" class="btn btn-default"><a href="{{url_for('home')}}">Back</a></button>
+<button type="button" class="btn btn-default"><a href="{{url_for('logout')}}">Logout</a></button>
+{% endblock %}

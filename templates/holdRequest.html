@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+{% block title %} Hold Request {% endblock %}
+{% block header %} <h4>Hold Request for a Book</h4> {% endblock %}
+{% block content %}
+<script>
+$(document).ready(function() {
+    $("#submit").click(function(e){
+        if (!$('#table').find('td input[type=radio]').is(':checked')) { 
+            alert("Please select a book!");
+            return false;
+        }
+    });
+});
+</script>
+{% if success %}
+<script>
+$(document).ready(function() {
+    $('#holdDate').datepicker();
+    $('#returnDate').datepicker();
+    var date = new Date();
+    date.setDate(date.getDate()+17);
+    $('#holdDate').datepicker("setDate", new Date());
+    $('#returnDate').datepicker("setDate",date);
+});
+</script>
+{% endif %}
+<div>
+    <h4>Books Available Summary</h4>
+    <form action="" method="post">
+        <table class="table" id='table' border="1" width="600">
+            <thead>
+            <tr>
+                <th>Select</th>
+                <th>ISBN</th>
+                <th>Title</th>
+                <th>Edition</th>
+                <th># of Copies Available</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for row in rows %}
+            {% if row.Copies > 0 %}
+            <tr>
+                <td><input type="radio" id='radio' name="selectedBook" value="{{row.ISBN}}"></td>
+                <td>{{row.ISBN}}</td>
+                <td>{{row.Title}}</td>
+                <td>{{row.Edition}}</td>
+                <td>{{row.Copies}}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <label>Hold Request Date:</label><input type="text" disabled='true' id='holdDate' name="holdDate">
+        <label>Estimated Return Date:</label><input type="text" disabled='true' id='returnDate' name="returnDate">
+        
+        <p><button type="button" class="btn btn-default"><a href="{{url_for('searchBooks')}}">Back</a></button>
+            <input class="btn btn-default" id='submit' type="submit" value="Confirm">
+        <p><button type="button" class="btn btn-default"><a href="{{url_for('logout')}}">Logout</a></button>
+    </form>
+    <h4>Books on Reserve</h4>
+    <form action="" method="post">
+        <table class="table" border="1" width="600">
+            <thead>
+            <tr>
+                <th>ISBN</th>
+                <th>Title</th>
+                <th>Edition</th>
+                <th># of Copies Available</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if reserve %}
+            {% for row in reserve %}
+            {% if row.Copies > 0 %}
+            <tr>
+                <td>{{row.ISBN}}</td>
+                <td>{{row.Title}}</td>
+                <td>{{row.Edition}}</td>
+                <td>{{row.Copies}}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+    </form>
+</div>
+{% endblock %}

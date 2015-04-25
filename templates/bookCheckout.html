@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %} Book Checkout {% endblock %}
+{% block header %} <h4> Book Checkout </h4> {% endblock %}
+{% block content %}
+<style>
+.uneditable{
+    background-color:#CCCCCC;
+    }
+</style>
+<div>
+    <form action="" method="post">
+        <label>Enter your Issue ID:</label><input type="text" name="issueID" value ={{issueID}}><input class="btn btn-default" type="submit" value="Submit" name="buttonOne">
+        <hr>
+        <label>User Name:</label><input class="uneditable" type="text" id='username' name="username" value="{{username}}" readonly>
+        <p><label>ISBN:</label><input class="uneditable" type="text" id='isbn' name="isbn" value="{{isbn}}" readonly>
+        <label>Copy #:</label><input class="uneditable" type="text" id='copyNumber' name="copyNumber" value="{{copyNumber}}" readonly>
+        <p><label>Checkout Date:</label><input class="uneditable" type="text" id='checkOutDate' name="checkOutDate" value="{{checkOutDate}}" readonly>
+        <label>Estimated Return Date:</label><input class="uneditable" type="text" id='estimatedReturnDate' name="estimatedReturnDate" value="{{estimatedReturnDate}}" readonly>
+        <p><input class="btn btn-default" type="submit" value="Confirm" name="buttonTwo">
+        <p><button type="button" class="btn btn-default"><a href="{{url_for('home')}}">Back</a></button>
+        <button type="button" class="btn btn-default"><a href="{{url_for('logout')}}">Logout</a></button>
+    </form>
+</div>
+{% endblock %}

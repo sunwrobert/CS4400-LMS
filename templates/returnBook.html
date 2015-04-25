@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block title %} Return Book {% endblock %}
+{% block header %} <h4> Return Book </h4> {% endblock %}
+{% block content %}
+<style>
+.uneditable{
+    background-color:#CCCCCC;
+    }
+</style>
+
+<script>
+    $(document).ready(function() {
+        var $isDamaged = $('#isDamaged');
+        $('select[name="damaged"]').change(function(){
+            $isDamaged.val($(this).val())
+        }).triggerHandler('change')
+    });
+</script>
+
+<div>
+    <form action="" method="post">
+        <label>Enter your Issue ID:</label><input type="text" name="issueID" value ={{issueID}}><input class="btn btn-default" type="submit" value="Submit" name="buttonOne">
+        <hr>
+        <label>ISBN:</label><input class="uneditable" type="text" id='isbn' name="isbn" value="{{isbn}}" readonly>
+        <p><label>Copy #:</label><input class="uneditable" type="text" id='copyNumber' name="copyNumber" value="{{copyNumber}}" readonly>
+        <label>Return in Damaged Condition:</label>
+        <select form="genderform" id='damaged' name='damaged'>
+            <option value="N">N</option>
+            <option value="Y">Y</option>
+        </select>
+        <p><label>User Name:</label><input class="uneditable" type="text" id='username' name="username" value="{{username}}" readonly>
+        <p><input class="btn btn-default" type="submit" value="Confirm" name="buttonTwo">
+        <p><button type="button" class="btn btn-default"><a href="{{url_for('home')}}">Back</a></button>
+        <button type="button" class="btn btn-default"><a href="{{url_for('logout')}}">Logout</a></button>
+        <input type="text" hidden='true' id='isDamaged' name='isDamaged' value="">
+    </form>
+    
+</div>
+{% endblock %}

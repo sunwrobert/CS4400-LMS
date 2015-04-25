@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block title %} Create Profile {% endblock %}
+{% block content %}
+<h4>Search Books</h4>
+<div>
+    <form action="" method="post">
+        <label>ISBN:</label><input type="text" name="isbn">
+        <p><label>Title:</label><input type="text" name="title">
+        <p><label>Author:</label><input type="datetime" name="author">
+        <p><button type="button" class="btn btn-default"><a href="{{url_for('home')}}">Back</a></button>
+        <input class="btn btn-default" type="submit" value="Search">
+        <p><button type="button" class="btn btn-default"><a href="{{url_for('logout')}}">Logout</a></button>
+    </form>
+</div>
+{% endblock %}

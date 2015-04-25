@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block title %} Home {% endblock %}
+{% block header %} <h4>Home</h4> {% endblock %}
+{% block content %}
+<style>
+    td{
+        height:50px
+    }
+</style>
+    <div>
+        <form action="" method="post">
+            <table border ="0" width="600">
+                {% if user == 'students' or user == 'faculty' %}
+                <tr>
+                    <td><button type="button" class="btn btn-default"><a href="{{url_for('searchBooks')}}">Search Books</a></button></td>
+                    <td><button type="button" class="btn btn-default"><a href="{{url_for('requestExtension')}}">Request Extension</a></button></td>
+                </tr>
+                <tr>
+                   <td><button type="button" class="btn btn-default"><a href="{{url_for('futureHoldRequest')}}">Future Hold Request</a></button></td>
+                   <td><button type="button" class="btn btn-default"><a href="{{url_for('trackBookLocation')}}">Track Book Location</a></button></td>
+                </tr>
+                {% endif %}
+                {% if user == 'staff' %}
+                <tr>
+                   <td><button type="button" class="btn btn-default"><a href="{{url_for('bookCheckout')}}">Book Checkout</a></button></td>
+                   <td><button type="button" class="btn btn-default"><a href="{{url_for('returnBook')}}">Return Book</a></button></td>
+                   <td><button type="button" class="btn btn-default"><a href="{{url_for('lostDamagedBook')}}">Lost/Damaged Book</a></button></td>
+                </tr>
+                <tr>
+                   <td><button type="button" class="btn btn-default"><a href="{{url_for('damagedReport')}}">Damaged Books Report</a></button></td>
+                   <td><button type="button" class="btn btn-default"><a href="{{url_for('popularBooksReport')}}">Popular Books Report</a></button></td>
+                   <td><button type="button" class="btn btn-default"><a href="{{url_for('frequentReport')}}">Frequent User Report</a></button></td>
+                   <td><button type="button" class="btn btn-default"><a href="{{url_for('popularSubjectReport')}}">Popular Subject Report</a></button></td>
+                </tr>
+                {% endif %}
+            </table>
+            <button type="button" class="btn btn-default"><a href="{{url_for('logout')}}">Logout</a></button>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %} Track Book Location {% endblock %}
+{% block header %} <h4> Track Book Location </h4> {% endblock %}
+{% block content %}
+<style>
+.uneditable{
+    background-color:#CCCCCC;
+    }
+</style>
+<div>
+    <form action="" method="post">
+        <label>ISBN: </label><input type="text" name="isbn" value="{{isbn}}"><input class="btn btn-default" type="submit" value="Locate">
+        <hr>
+        <label>Floor Number:</label><input class="uneditable" type="text" name="floorNumber" value="{{floorNumber}}" readonly>
+        <label>Shelf Number:</label><input class="uneditable" type="text" name="shelfNumber" value="{{shelfNumber}}" readonly>
+        <p><label>Aisle Number:</label><input class="uneditable" type="text" name="aisleNumber" value="{{aisleNumber}}" readonly>
+        <label>Subject:</label><input class="uneditable" type="text" name="subject" value="{{subjectName}}" readonly>
+        <p><button type="button" class="btn btn-default"><a href="{{url_for('home')}}">Back</a></button>
+        <button type="button" class="btn btn-default"><a href="{{url_for('logout')}}">Logout</a></button>
+    </form>
+</div>
+{% endblock %}

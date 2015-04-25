@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %} Request Extension {% endblock %}
+{% block header %} <h4> Request Extension </h4> {% endblock %}
+{% block content %}
+<style>
+.uneditable{
+    background-color:#CCCCCC;
+    }
+</style>
+<div>
+    <form action="" method="post">
+        <label>Enter your Issue ID:</label><input type="text" name="issueID" value ={{issueID}}><input class="btn btn-default" type="submit" value="Submit" name="buttonOne">
+        <hr>
+        <label>Original Checkout Date:</label><input class="uneditable" type="text" id='originalCheckoutDate' name="originalCheckoutDate" value="{{originalCheckoutDate}}" readonly>
+        <p><label>Current Extension Date:</label><input class="uneditable" type="text" id='currentExtensionDate' name="currentExtensionDate" value="{{currentExtensionDate}}" readonly>
+        <label>Current Return Date:</label><input class="uneditable" type="text" id='currentReturnDate' name="currentReturnDate" value="{{currentReturnDate}}" readonly>
+        <p><label>New Extension Date:</label><input class="uneditable" type="text" id='newExtensionDate' name="newExtensionDate" value="{{newExtensionDate}}" readonly>
+        <label>New Estimated Return Date:</label><input class="uneditable" type="text" id='newEstimatedReturnDate' name="newEstimatedReturnDate" value="{{newEstimatedReturnDate}}" readonly>
+        <p><input class="btn btn-default" type="submit" value="Request Extension" name="buttonTwo">
+        <p><button type="button" class="btn btn-default"><a href="{{url_for('home')}}">Back</a></button>
+        <button type="button" class="btn btn-default"><a href="{{url_for('logout')}}">Logout</a></button>
+    </form>
+</div>
+{% endblock %}

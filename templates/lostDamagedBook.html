@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block title %} Lost/Damaged Book {% endblock %}
+{% block header %} <h4> Lost/Damaged Book </h4> {% endblock %}
+{% block content %}
+<style>
+.uneditable{
+    background-color:#CCCCCC;
+    }
+</style>
+
+<script>
+    $(document).ready(function() {
+        var $isDamaged = $('#isDamaged');
+        $('select[name="damaged"]').change(function(){
+            $isDamaged.val($(this).val())
+        }).triggerHandler('change')
+        var date = new Date();
+        $('#currentTime').val(date.toUTCString());
+    });
+</script>
+
+<div>
+    <form action="" method="post">
+        <label>ISBN:</label><input type="text" name="isbn" value ={{isbn}}>
+        <label>Book Copy #:</label><input type="text" name="copyNumber" value ={{copyNumber}}>
+        <p><label>Current Time:</label><input type="text" class="uneditable" id="currentTime" name="currentTime" value ="" readonly>
+        <p><input class="btn btn-default" type="submit" value="Look for the last user" name="buttonOne">
+        <hr>
+        <label>Last User of the Book:</label><input class="uneditable" type="text" id='lastUser' name="lastUser" value="{{lastUser}}" readonly>
+        <label>Amount to be charged:</label><input type="text" name="amountCharged" value ="{{amountCharged}}">
+        <p><input class="btn btn-default" type="submit" value="Confirm" name="buttonTwo">
+        <p><button type="button" class="btn btn-default"><a href="{{url_for('home')}}">Back</a></button>
+        <button type="button" class="btn btn-default"><a href="{{url_for('logout')}}">Logout</a></button>
+    </form>
+    
+</div>
+{% endblock %}

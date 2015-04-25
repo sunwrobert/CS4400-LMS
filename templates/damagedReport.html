@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+{% block title %} Damaged Books Report {% endblock %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="table.css">
+<h4>Damaged Books Report</h4>
+<div>
+    <form action="" method="post">
+        <label>Month </label>
+        <select id="month" name="month">
+            <option></option>
+            <option value="January">January</option>
+            <option value="February">February</option>
+            <option value="March">March</option>
+        </select>
+        <p>
+        <label>Subject</label>
+        <select id="subject1" name="subject1">
+            <option></option>
+            <option value="Economics">Economics</option>
+            <option value="Fiction">Fiction</option>
+            <option value="History">History</option>
+            <option value="Math">Math</option>
+            <option value="Nonfiction">Nonfiction</option>
+            <option value="Science">Science</option>
+        </select>
+        <p>
+        <label>Subject</label>
+        <select id="subject2" name="subject2">
+            <option></option>
+            <option value="Economics">Economics</option>
+            <option value="Fiction">Fiction</option>
+            <option value="History">History</option>
+            <option value="Math">Math</option>
+            <option value="Nonfiction">Nonfiction</option>
+            <option value="Science">Science</option>
+        </select>
+        <p>
+        <label>Subject</label>
+        <select id="subject3" name="subject3">
+            <option></option>
+            <option value="Economics">Economics</option>
+            <option value="Fiction">Fiction</option>
+            <option value="History">History</option>
+            <option value="Math">Math</option>
+            <option value="Nonfiction">Nonfiction</option>
+            <option value="Science">Science</option>
+        </select>
+        <p>
+        <p><input class="btn btn-default" type="submit" value="Show Report">
+        <hr>
+        <table class="table" id='table' width="600">
+            <thead>
+            <tr>
+                <th>Month</th>
+                <th>Subject</th>
+                <th># of Damaged Books</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if rows %}
+            <tr>
+                <td>{{month}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% for row in rows %}
+            <tr>
+                <td></td>
+                <td>{{row.Subject}}</td>
+                <td>{{row.DamagedBooks}}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+    </form>
+</div>
+<p><button type="button" class="btn btn-default"><a href="{{url_for('home')}}">Back</a></button>
+<button type="button" class="btn btn-default"><a href="{{url_for('logout')}}">Logout</a></button>
+{% endblock %}

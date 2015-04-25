@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block title %} Future Hold Request {% endblock %}
+{% block header %} <h4> Future Hold Request </h4> {% endblock %}
+{% block content %}
+<style>
+.uneditable{
+    background-color:#CCCCCC;
+    }
+</style>
+<div>
+    <form action="" method="post">
+        <label>ISBN:</label><input type="text" name="isbn" value = {{isbn}}><input class="btn btn-default" type="submit" value="Request" name="buttonOne">
+        <hr>
+        <label>Copy Number:</label><input class="uneditable" type="text" name="copyNumber" value="{{copyNumber}}" readonly>
+        <p><label>Expected Available Date:</label><input class="uneditable" type="text" name="expectedAvailableDate" value="{{expectedAvailableDate}}" readonly>
+        <p><input class="btn btn-default" type="submit" value="Confirm" name="buttonTwo">
+        <p><button type="button" class="btn btn-default"><a href="{{url_for('home')}}">Back</a></button>
+        <button type="button" class="btn btn-default"><a href="{{url_for('logout')}}">Logout</a></button>
+    </form>
+</div>
+{% endblock %}
